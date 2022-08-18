@@ -8,10 +8,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "Stock_20220131",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
 				}
 			],
@@ -19,8 +15,7 @@
 			"transformations": [],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1"
+				"     validateSchema: false) ~> source1"
 			]
 		}
 	}
