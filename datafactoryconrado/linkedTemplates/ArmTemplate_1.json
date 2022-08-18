@@ -1,0 +1,1185 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactoryconrado"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "DELETE from [dbo].[Cars]",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "autos",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Autos"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-17T19:08:04Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_demo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select top(100) * from production.brands",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSqlTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Notebook1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Demo/Demo"
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureDatabricks1",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Demo"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Transformacionautos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Autos"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "autos",
+								"type": "DatasetReference"
+							},
+							"name": "Autos"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Autos",
+						"Autos derive(Nombre = concat(Type, \"  \",  Model)) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as decimal(18,0)",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflowParam')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Parametrizacion"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "carpaetaCSV",
+								"type": "DatasetReference"
+							},
+							"name": "CSV"
+						},
+						{
+							"dataset": {
+								"referenceName": "CarpetaXLSX",
+								"type": "DatasetReference"
+							},
+							"name": "XLSX"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Parquet",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "AzureDataLakeStorageEjercitacion1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [
+						{
+							"name": "millid1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "millid"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Mill_Id as string,",
+						"          Order_Number as integer,",
+						"          Order_Item as string,",
+						"          Order_Item_Creation_Date as string,",
+						"          Product_Code as string,",
+						"          Requested_Tn_Qty as double,",
+						"          Segment_Id as short,",
+						"          Invoicing_Customer_Id as integer,",
+						"          Production_Order_Key as string,",
+						"          COMM_ORDER_ITM_ID as string,",
+						"          COMM_DOC_LOCATION_CODE as string,",
+						"          COMM_DOC_YEAR as string,",
+						"          COMM_DOC_MONTH as string,",
+						"          COMM_DOC_TYPE as string,",
+						"          COMM_DOC_NUMBER as string,",
+						"          COMM_DOC_ITEM_NUM as string,",
+						"          RFD_Type as string,",
+						"          Order_Rolling_Date as string,",
+						"          Order_Aging_Rolling_Date as string,",
+						"          Order_RFD_Date as string,",
+						"          Order_Aging_RFD_Date as string,",
+						"          Order_Reception_Date as string,",
+						"          Order_Reception_Aging_Date as string,",
+						"          Order_First_Process_Date as string,",
+						"          Order_First_Process_Aging_Date as string,",
+						"          rnd_flag as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CSV",
+						"source(output(",
+						"          stock_record_key as string,",
+						"          mill_id as string,",
+						"          data_source_origin as string,",
+						"          stock_date as date,",
+						"          process_date as double,",
+						"          shift_number as short,",
+						"          storage_type as string,",
+						"          storage_unit_code as string,",
+						"          heat_key as string,",
+						"          mill_production_order_item_key as string,",
+						"          work_order_key as integer,",
+						"          local_product_code as integer,",
+						"          local_product_type as string,",
+						"          stock_type as string,",
+						"          local_material_status as short,",
+						"          stock_classification as string,",
+						"          location_type as string,",
+						"          location_code as string,",
+						"          production_line_id as string,",
+						"          warehouse_key as short,",
+						"          machine_id as string,",
+						"          rfd_flag as string,",
+						"          stock_in_process_flag as string,",
+						"          origin_rolling_mill as string,",
+						"          aging_date as integer,",
+						"          aging_date_name as string,",
+						"          aging_flag as string,",
+						"          stock_mt_qty as double,",
+						"          stock_pc_qty as short,",
+						"          stock_tn_qty as double,",
+						"          stock_kg_qty as double,",
+						"          stock_nominal_tn_qty as string,",
+						"          stock_ft_qty as double,",
+						"          caliber_steel as string,",
+						"          steel_code as string,",
+						"          length_steel as string,",
+						"          tenaris_property_flag as string,",
+						"          origin_mill as string,",
+						"          Heat_Date as string,",
+						"          Order_Heat_Rolling_Date as string,",
+						"          Order_Rolling_Date as string,",
+						"          Order_Aging_Rolling_Date as string,",
+						"          Order_RFD_Date as string,",
+						"          Order_Aging_RFD_Date as string,",
+						"          Order_Reception_Date as string,",
+						"          Order_Reception_Aging_Date as string,",
+						"          Order_First_Process_Date as string,",
+						"          Order_First_Process_Aging_Date as string,",
+						"          RFD_Type as string,",
+						"          Local_material_status_sub_type as string,",
+						"          SurrogateKey as integer,",
+						"          local_material_status_cost as short,",
+						"          Imported_material_flag as string,",
+						"          bill_and_hold_flag as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> XLSX",
+						"XLSX filter(mill_id =='1') ~> millid1",
+						"CSV select(mapColumn(",
+						"          Mill_Id,",
+						"          Order_Number,",
+						"          Order_Item,",
+						"          Order_Item_Creation_Date,",
+						"          Product_Code,",
+						"          Requested_Tn_Qty,",
+						"          Segment_Id,",
+						"          Invoicing_Customer_Id,",
+						"          Production_Order_Key,",
+						"          COMM_ORDER_ITM_ID,",
+						"          COMM_DOC_LOCATION_CODE,",
+						"          COMM_DOC_YEAR,",
+						"          COMM_DOC_MONTH,",
+						"          COMM_DOC_TYPE,",
+						"          COMM_DOC_NUMBER,",
+						"          COMM_DOC_ITEM_NUM,",
+						"          RFD_Type,",
+						"          Order_Rolling_Date,",
+						"          Order_Aging_Rolling_Date,",
+						"          Order_RFD_Date,",
+						"          Order_Aging_RFD_Date,",
+						"          Order_Reception_Date,",
+						"          Order_Reception_Aging_Date,",
+						"          Order_First_Process_Date,",
+						"          Order_First_Process_Aging_Date,",
+						"          rnd_flag",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"millid1 select(mapColumn(",
+						"          stock_record_key,",
+						"          mill_id,",
+						"          data_source_origin,",
+						"          stock_date,",
+						"          process_date,",
+						"          shift_number,",
+						"          storage_type,",
+						"          storage_unit_code,",
+						"          heat_key,",
+						"          mill_production_order_item_key,",
+						"          work_order_key,",
+						"          local_product_code,",
+						"          local_product_type,",
+						"          stock_type,",
+						"          stock_ft_qty,",
+						"          caliber_steel,",
+						"          steel_code,",
+						"          SurrogateKey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2, select1 join(select2@mill_id == select1@Mill_Id,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> millid",
+						"millid sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_SIDERCA')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Siderca"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Stock_20220131",
+								"type": "DatasetReference"
+							},
+							"name": "STOCK"
+						},
+						{
+							"dataset": {
+								"referenceName": "ProdDesignBajadaSiderca14Feb",
+								"type": "DatasetReference"
+							},
+							"name": "PRODDESIGN"
+						},
+						{
+							"dataset": {
+								"referenceName": "OrdenesSidercaBajadaSiderca",
+								"type": "DatasetReference"
+							},
+							"name": "ORDENES"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Parquet1",
+								"type": "DatasetReference"
+							},
+							"name": "DatalakeParquet"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ID1"
+						},
+						{
+							"name": "ID2"
+						},
+						{
+							"name": "ID3"
+						},
+						{
+							"name": "join1"
+						},
+						{
+							"name": "join2"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          stock_record_key as string,",
+						"          mill_id as string,",
+						"          data_source_origin as string,",
+						"          stock_date as date,",
+						"          process_date as double,",
+						"          shift_number as short,",
+						"          storage_type as string,",
+						"          storage_unit_code as string,",
+						"          heat_key as string,",
+						"          mill_production_order_item_key as string,",
+						"          work_order_key as integer,",
+						"          local_product_code as integer,",
+						"          local_product_type as string,",
+						"          stock_type as string,",
+						"          local_material_status as short,",
+						"          stock_classification as string,",
+						"          location_type as string,",
+						"          location_code as string,",
+						"          production_line_id as string,",
+						"          warehouse_key as short,",
+						"          machine_id as string,",
+						"          rfd_flag as string,",
+						"          stock_in_process_flag as string,",
+						"          origin_rolling_mill as string,",
+						"          aging_date as integer,",
+						"          aging_date_name as string,",
+						"          aging_flag as string,",
+						"          stock_mt_qty as double,",
+						"          stock_pc_qty as short,",
+						"          stock_tn_qty as double,",
+						"          stock_kg_qty as double,",
+						"          stock_nominal_tn_qty as string,",
+						"          stock_ft_qty as double,",
+						"          caliber_steel as string,",
+						"          steel_code as string,",
+						"          length_steel as string,",
+						"          tenaris_property_flag as string,",
+						"          origin_mill as string,",
+						"          Heat_Date as string,",
+						"          Order_Heat_Rolling_Date as string,",
+						"          Order_Rolling_Date as string,",
+						"          Order_Aging_Rolling_Date as string,",
+						"          Order_RFD_Date as string,",
+						"          Order_Aging_RFD_Date as string,",
+						"          Order_Reception_Date as string,",
+						"          Order_Reception_Aging_Date as string,",
+						"          Order_First_Process_Date as string,",
+						"          Order_First_Process_Aging_Date as string,",
+						"          RFD_Type as string,",
+						"          Local_material_status_sub_type as string,",
+						"          SurrogateKey as integer,",
+						"          local_material_status_cost as short,",
+						"          Imported_material_flag as string,",
+						"          bill_and_hold_flag as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> STOCK",
+						"source(output(",
+						"          RunId as string,",
+						"          CreatedBy as string,",
+						"          CreatedTimestamp as string,",
+						"          MillId as string,",
+						"          ProductCode as integer,",
+						"          {product-type} as string,",
+						"          TypeCode as short,",
+						"          Status as string,",
+						"          SteelChemCode as double,",
+						"          SteelGradeCode as short,",
+						"          OdExtMm as double,",
+						"          WtMm as double,",
+						"          HtCode as short,",
+						"          MinLength as double,",
+						"          MaxLength as double,",
+						"          MultAlt2 as short,",
+						"          OdExtIn as double,",
+						"          PPF as double,",
+						"          StartDate as string,",
+						"          LastModifDate as string,",
+						"          CoupCode as integer,",
+						"          MultAlt1 as short,",
+						"          HolCoupCode as short,",
+						"          LastModifUser as string,",
+						"          StartUser as string,",
+						"          WtIn as double,",
+						"          EndDesc as string,",
+						"          Type as string,",
+						"          NormDesc as integer,",
+						"          SubNormDesc as string,",
+						"          SteelGradeDesc as string,",
+						"          EndLongDesc as string,",
+						"          EndCodeOdMin as short,",
+						"          EndCode as short,",
+						"          EndCodeLocal as string,",
+						"          EndCodeDescLoc as string,",
+						"          NormCode as integer,",
+						"          SubNormCode as integer,",
+						"          {Type-prco} as string,",
+						"          {OdExtMm-prco} as double,",
+						"          {WtMm-prco} as double,",
+						"          {WtIn-prco} as double,",
+						"          {EndLongDesc-prco} as string,",
+						"          {SteelGradeDesc-prco} as string,",
+						"          {MinLength-prco} as double,",
+						"          {MaxLength-prco} as double,",
+						"          {NormDesc-prco} as string,",
+						"          {HtCode-prco} as short,",
+						"          {PPF-prco} as double,",
+						"          {ENP-PRCO} as short,",
+						"          {PCK-PRCO} as short,",
+						"          {FIN-PRCO} as string,",
+						"          {FTC-PRCO} as short,",
+						"          {ETC-PRCO} as short,",
+						"          TS_END_COUPLING_FLAG as string,",
+						"          {conforming-route} as string,",
+						"          HolTubeCode as integer,",
+						"          coupling_weight as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> PRODDESIGN",
+						"source(output(",
+						"          Mill_Id as string,",
+						"          Order_Number as integer,",
+						"          Order_Item as string,",
+						"          Order_Item_Creation_Date as string,",
+						"          Product_Code as string,",
+						"          Requested_Tn_Qty as double,",
+						"          Segment_Id as short,",
+						"          Invoicing_Customer_Id as integer,",
+						"          Production_Order_Key as string,",
+						"          COMM_ORDER_ITM_ID as string,",
+						"          COMM_DOC_LOCATION_CODE as string,",
+						"          COMM_DOC_YEAR as string,",
+						"          COMM_DOC_MONTH as string,",
+						"          COMM_DOC_TYPE as string,",
+						"          COMM_DOC_NUMBER as string,",
+						"          COMM_DOC_ITEM_NUM as string,",
+						"          RFD_Type as string,",
+						"          Order_Rolling_Date as string,",
+						"          Order_Aging_Rolling_Date as string,",
+						"          Order_RFD_Date as string,",
+						"          Order_Aging_RFD_Date as string,",
+						"          Order_Reception_Date as string,",
+						"          Order_Reception_Aging_Date as string,",
+						"          Order_First_Process_Date as string,",
+						"          Order_First_Process_Aging_Date as string,",
+						"          rnd_flag as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ORDENES",
+						"STOCK filter(mill_id == \"1\") ~> ID1",
+						"PRODDESIGN filter(MillId == '1') ~> ID2",
+						"ORDENES filter(Mill_Id == '1') ~> ID3",
+						"ID1, ID2 join(mill_id == MillId",
+						"     && local_product_code == ProductCode,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1, ID3 join(mill_production_order_item_key == Production_Order_Key,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join2",
+						"join2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DatalakeParquet"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Transformacionautos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Transformacionautos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Autos": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Autos"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-17T19:08:05Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Transformacionautos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_SIDERCA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_SIDERCA",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"STOCK": {},
+									"PRODDESIGN": {},
+									"ORDENES": {},
+									"DatalakeParquet": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Siderca"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-17T19:08:05Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_SIDERCA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_parametrizacion')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ProdDesign",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "carpaetaCSV",
+								"type": "DatasetReference",
+								"parameters": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaCSV",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.ProdDesign",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaPARQUET",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.ProdDesign",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Ordenes",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "carpaetaCSV",
+								"type": "DatasetReference",
+								"parameters": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaCSV",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.Ordenes",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaPARQUET",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.Ordenes",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Stock",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "CarpetaXLSX",
+								"type": "DatasetReference",
+								"parameters": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaXLSX",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.Stock",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaPARQUET",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.Stock",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "dataflowParam",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflowParam",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CSV": {
+										"zona": {
+											"value": "@pipeline().parameters.zona",
+											"type": "Expression"
+										},
+										"carpeta": {
+											"value": "@pipeline().parameters.carpetaCSV",
+											"type": "Expression"
+										},
+										"archivo": {
+											"value": "@pipeline().parameters.ProdDesign",
+											"type": "Expression"
+										}
+									},
+									"XLSX": {
+										"zona": {
+											"value": "@pipeline().parameters.zona",
+											"type": "Expression"
+										},
+										"carpeta": {
+											"value": "@pipeline().parameters.carpetaXLSX",
+											"type": "Expression"
+										},
+										"archivo": {
+											"value": "@pipeline().parameters.Stock",
+											"type": "Expression"
+										}
+									},
+									"sink1": {
+										"zona": {
+											"value": "@pipeline().parameters.zona",
+											"type": "Expression"
+										},
+										"carpeta": {
+											"value": "@pipeline().parameters.carpetaPARQUET",
+											"type": "Expression"
+										},
+										"archivo": "salida"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"zona": {
+						"type": "string",
+						"defaultValue": "Parametrizacion"
+					},
+					"carpetaCSV": {
+						"type": "string",
+						"defaultValue": "CSVS"
+					},
+					"carpetaXLSX": {
+						"type": "string",
+						"defaultValue": "XLSX"
+					},
+					"carpetaPARQUET": {
+						"type": "string",
+						"defaultValue": "PARQUET"
+					},
+					"ProdDesign": {
+						"type": "string",
+						"defaultValue": "ProdDesignBajadaSiderca14Feb.csv"
+					},
+					"Ordenes": {
+						"type": "string",
+						"defaultValue": "OrdenesSidercaBajadaSiderca.csv"
+					},
+					"Stock": {
+						"type": "string",
+						"defaultValue": "Stock_20220131 (1).xlsx"
+					}
+				},
+				"folder": {
+					"name": "Parametrizacion"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-17T19:08:05Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflowParam')]"
+			]
+		}
+	]
+}
