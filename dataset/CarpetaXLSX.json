@@ -1,0 +1,43 @@
+{
+	"name": "CarpetaXLSX",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorageEjercitacion1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"zona": {
+				"type": "string"
+			},
+			"carpeta": {
+				"type": "string"
+			},
+			"archivo": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Parametrizacion"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().archivo",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat(dataset().zona, '/', dataset().carpeta)",
+					"type": "Expression"
+				},
+				"fileSystem": "ejercitacion"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

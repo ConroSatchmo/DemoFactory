@@ -1,0 +1,9 @@
+{
+	"name": "datafactoryconrado",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dede0ed7-71e7-45ab-8bd7-d58f68bd96aa",
+		"tenantId": "0824875d-186d-4aa9-85ba-000d9d6769ac"
+	}
+}

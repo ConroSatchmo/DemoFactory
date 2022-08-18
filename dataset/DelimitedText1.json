@@ -1,0 +1,131 @@
+{
+	"name": "DelimitedText1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorageEjercitacion1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Ejercitacion1"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "ejercitacion"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Mill_Id",
+				"type": "String"
+			},
+			{
+				"name": "Order_Number",
+				"type": "String"
+			},
+			{
+				"name": "Order_Item",
+				"type": "String"
+			},
+			{
+				"name": "Order_Item_Creation_Date",
+				"type": "String"
+			},
+			{
+				"name": "Product_Code",
+				"type": "String"
+			},
+			{
+				"name": "Requested_Tn_Qty",
+				"type": "String"
+			},
+			{
+				"name": "Segment_Id",
+				"type": "String"
+			},
+			{
+				"name": "Invoicing_Customer_Id",
+				"type": "String"
+			},
+			{
+				"name": "Production_Order_Key",
+				"type": "String"
+			},
+			{
+				"name": "COMM_ORDER_ITM_ID",
+				"type": "String"
+			},
+			{
+				"name": "COMM_DOC_LOCATION_CODE",
+				"type": "String"
+			},
+			{
+				"name": "COMM_DOC_YEAR",
+				"type": "String"
+			},
+			{
+				"name": "COMM_DOC_MONTH",
+				"type": "String"
+			},
+			{
+				"name": "COMM_DOC_TYPE",
+				"type": "String"
+			},
+			{
+				"name": "COMM_DOC_NUMBER",
+				"type": "String"
+			},
+			{
+				"name": "COMM_DOC_ITEM_NUM",
+				"type": "String"
+			},
+			{
+				"name": "RFD_Type",
+				"type": "String"
+			},
+			{
+				"name": "Order_Rolling_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_Aging_Rolling_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_RFD_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_Aging_RFD_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_Reception_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_Reception_Aging_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_First_Process_Date",
+				"type": "String"
+			},
+			{
+				"name": "Order_First_Process_Aging_Date",
+				"type": "String"
+			},
+			{
+				"name": "rnd_flag",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

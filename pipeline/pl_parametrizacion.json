@@ -1,0 +1,357 @@
+{
+	"name": "pl_parametrizacion",
+	"properties": {
+		"activities": [
+			{
+				"name": "ProdDesign",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "carpaetaCSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaCSV",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.ProdDesign",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaPARQUET",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.ProdDesign",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Ordenes",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "carpaetaCSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaCSV",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.Ordenes",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaPARQUET",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.Ordenes",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Stock",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CarpetaXLSX",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaXLSX",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.Stock",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaPARQUET",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.Stock",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "dataflowParam",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflowParam",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"CSV": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaCSV",
+									"type": "Expression"
+								},
+								"archivo": {
+									"value": "@pipeline().parameters.ProdDesign",
+									"type": "Expression"
+								}
+							},
+							"XLSX": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaXLSX",
+									"type": "Expression"
+								},
+								"archivo": {
+									"value": "@pipeline().parameters.Stock",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaPARQUET",
+									"type": "Expression"
+								},
+								"archivo": "salida"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"zona": {
+				"type": "string",
+				"defaultValue": "Parametrizacion"
+			},
+			"carpetaCSV": {
+				"type": "string",
+				"defaultValue": "CSVS"
+			},
+			"carpetaXLSX": {
+				"type": "string",
+				"defaultValue": "XLSX"
+			},
+			"carpetaPARQUET": {
+				"type": "string",
+				"defaultValue": "PARQUET"
+			},
+			"ProdDesign": {
+				"type": "string",
+				"defaultValue": "ProdDesignBajadaSiderca14Feb.csv"
+			},
+			"Ordenes": {
+				"type": "string",
+				"defaultValue": "OrdenesSidercaBajadaSiderca.csv"
+			},
+			"Stock": {
+				"type": "string",
+				"defaultValue": "Stock_20220131 (1).xlsx"
+			}
+		},
+		"folder": {
+			"name": "Parametrizacion"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-08-17T19:08:05Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
