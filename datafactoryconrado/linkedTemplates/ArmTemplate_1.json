@@ -1266,37 +1266,107 @@
 								}
 							}
 						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"zona": {
+						"type": "string",
+						"defaultValue": "Parametrizacion"
+					},
+					"carpetaCSV": {
+						"type": "string",
+						"defaultValue": "CSVS"
+					},
+					"carpetaXLSX": {
+						"type": "string",
+						"defaultValue": "XLSX"
+					},
+					"carpetaPARQUET": {
+						"type": "string",
+						"defaultValue": "PARQUET"
+					},
+					"ProdDesign": {
+						"type": "string",
+						"defaultValue": "ProdDesignBajadaSiderca14Feb.csv"
+					},
+					"Ordenes": {
+						"type": "string",
+						"defaultValue": "OrdenesSidercaBajadaSiderca.csv"
+					},
+					"Stock": {
+						"type": "string",
+						"defaultValue": "Stock_20220131 (1).xlsx"
+					}
+				},
+				"folder": {
+					"name": "Parametrizacion"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-17T19:08:05Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflowParam')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_parametrizacion_execute')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_parametrizacion",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpetaCSV": {
+									"value": "@pipeline().parameters.carpetaCSV",
+									"type": "Expression"
+								},
+								"carpetaXLSX": {
+									"value": "@pipeline().parameters.carpetaXLSX",
+									"type": "Expression"
+								},
+								"carpetaPARQUET": {
+									"value": "@pipeline().parameters.carpetaPARQUET",
+									"type": "Expression"
+								},
+								"ProdDesign": {
+									"value": "@pipeline().parameters.ProdDesign",
+									"type": "Expression"
+								},
+								"Ordenes": {
+									"value": "@pipeline().parameters.Ordenes",
+									"type": "Expression"
+								},
+								"Stock": {
+									"value": "@pipeline().parameters.Stock",
+									"type": "Expression"
+								}
+							}
+						}
 					},
 					{
 						"name": "Web1",
 						"type": "WebActivity",
 						"dependsOn": [
 							{
-								"activity": "salida",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "ProdDesign",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Ordenes",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Stock",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "dataflowParam",
+								"activity": "Execute Pipeline1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1316,6 +1386,35 @@
 							"headers": {},
 							"body": {
 								"value": "{\n    \"title\": \"PIPELINE EJECUTADO\",\n    \"message\": \"PIPELINE EJECUTADO CON EXITO\",\n    \"color\": \"GREEN\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcnow()}\"\n}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Mail error",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline1",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-20.eastus.logic.azure.com:443/workflows/96e8806dd77d4bf19087846bc75349b4/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1xFV2kFfoUUsbgvm5RLzj5bV06IZkmmJBWQ_Pub3YVg",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "{\n    \"title\": \"PIPELINE MAl EJECUTADO\",\n    \"message\": \"@{activity('Execute Pipeline1').error.message}\",\n    \"color\": \"RED\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcnow()}\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -1362,7 +1461,7 @@
 				"lastPublishTime": "2022-08-17T19:08:05Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflowParam')]"
+				"[concat(variables('factoryId'), '/pipelines/pl_parametrizacion')]"
 			]
 		}
 	]
