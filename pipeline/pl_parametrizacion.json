@@ -35,36 +35,8 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
+					"enableStaging": false
 				},
-				"inputs": [
-					{
-						"referenceName": "carpaetaCSV",
-						"type": "DatasetReference",
-						"parameters": {
-							"zona": {
-								"value": "@pipeline().parameters.zona",
-								"type": "Expression"
-							},
-							"carpeta": {
-								"value": "@pipeline().parameters.carpetaCSV",
-								"type": "Expression"
-							},
-							"archivo": {
-								"value": "@pipeline().parameters.ProdDesign",
-								"type": "Expression"
-							}
-						}
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "Parquet",
@@ -119,36 +91,8 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
+					"enableStaging": false
 				},
-				"inputs": [
-					{
-						"referenceName": "carpaetaCSV",
-						"type": "DatasetReference",
-						"parameters": {
-							"zona": {
-								"value": "@pipeline().parameters.zona",
-								"type": "Expression"
-							},
-							"carpeta": {
-								"value": "@pipeline().parameters.carpetaCSV",
-								"type": "Expression"
-							},
-							"archivo": {
-								"value": "@pipeline().parameters.Ordenes",
-								"type": "Expression"
-							}
-						}
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "Parquet",
@@ -212,7 +156,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CarpetaXLSX",
+						"referenceName": "carpetaXLSX",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -376,27 +320,8 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
+					"enableStaging": false
 				},
-				"inputs": [
-					{
-						"referenceName": "carpaetaCSV",
-						"type": "DatasetReference",
-						"parameters": {
-							"zona": "Parametrizacion",
-							"carpeta": "CSVS",
-							"archivo": "fprod/part-00000-tid-2230042859577649524-20df3528-64a3-491e-bc4a-6095abb57bec-32-1-c000.csv"
-						}
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "Parquet",

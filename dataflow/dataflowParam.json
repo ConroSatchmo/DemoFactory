@@ -8,15 +8,11 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "carpaetaCSV",
-						"type": "DatasetReference"
-					},
 					"name": "CSV"
 				},
 				{
 					"dataset": {
-						"referenceName": "CarpetaXLSX",
+						"referenceName": "carpetaXLSX",
 						"type": "DatasetReference"
 					},
 					"name": "XLSX"
@@ -82,8 +78,7 @@
 				"          rnd_flag as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> CSV",
+				"     validateSchema: false) ~> CSV",
 				"source(output(",
 				"          stock_record_key as string,",
 				"          mill_id as string,",
@@ -232,6 +227,34 @@
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          Mill_Id as string,",
+				"          Order_Number as string,",
+				"          Order_Item as string,",
+				"          Order_Item_Creation_Date as string,",
+				"          Product_Code as string,",
+				"          Requested_Tn_Qty as string,",
+				"          Segment_Id as string,",
+				"          Invoicing_Customer_Id as string,",
+				"          Production_Order_Key as string,",
+				"          COMM_ORDER_ITM_ID as string,",
+				"          COMM_DOC_LOCATION_CODE as string,",
+				"          COMM_DOC_YEAR as string,",
+				"          COMM_DOC_MONTH as string,",
+				"          COMM_DOC_TYPE as string,",
+				"          COMM_DOC_NUMBER as string,",
+				"          COMM_DOC_ITEM_NUM as string,",
+				"          RFD_Type as string,",
+				"          Order_Rolling_Date as string,",
+				"          Order_Aging_Rolling_Date as string,",
+				"          Order_RFD_Date as string,",
+				"          Order_Aging_RFD_Date as string,",
+				"          Order_Reception_Date as string,",
+				"          Order_Reception_Aging_Date as string,",
+				"          Order_First_Process_Date as string,",
+				"          Order_First_Process_Aging_Date as string,",
+				"          rnd_flag as string",
+				"     ),",
 				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
