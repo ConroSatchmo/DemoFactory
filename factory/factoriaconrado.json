@@ -1,0 +1,9 @@
+{
+	"name": "factoriaconrado",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "cc5a3b07-542b-4551-be2b-d80a81c7842d",
+		"tenantId": "3048dc87-43f0-4100-9acb-ae1971c79395"
+	}
+}

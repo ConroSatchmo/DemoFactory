@@ -2,7 +2,7 @@
 	"name": "Parquet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorageEjercitacion1",
+			"referenceName": "Storage",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
@@ -25,18 +25,123 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat(dataset().archivo, '_',formatDateTime(utcnow()), '.parquet')",
+					"value": "@dataset().archivo",
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat(dataset().zona, '/', dataset().carpeta)",
+					"value": "@concat(dataset().zona, '/', dataset().archivo)",
 					"type": "Expression"
 				},
 				"fileSystem": "ejercitacion"
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "Mill_Id",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Number",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Item",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Item_Creation_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Product_Code",
+				"type": "UTF8"
+			},
+			{
+				"name": "Requested_Tn_Qty",
+				"type": "UTF8"
+			},
+			{
+				"name": "Segment_Id",
+				"type": "UTF8"
+			},
+			{
+				"name": "Invoicing_Customer_Id",
+				"type": "UTF8"
+			},
+			{
+				"name": "Production_Order_Key",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_ORDER_ITM_ID",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_DOC_LOCATION_CODE",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_DOC_YEAR",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_DOC_MONTH",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_DOC_TYPE",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_DOC_NUMBER",
+				"type": "UTF8"
+			},
+			{
+				"name": "COMM_DOC_ITEM_NUM",
+				"type": "UTF8"
+			},
+			{
+				"name": "RFD_Type",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Rolling_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Aging_Rolling_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_RFD_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Aging_RFD_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Reception_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_Reception_Aging_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_First_Process_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "Order_First_Process_Aging_Date",
+				"type": "UTF8"
+			},
+			{
+				"name": "rnd_flag",
+				"type": "UTF8"
+			}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
