@@ -48,7 +48,21 @@
 				"inputs": [
 					{
 						"referenceName": "carpetaCSV",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaCSV",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.ProdDesign",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -118,7 +132,21 @@
 				"inputs": [
 					{
 						"referenceName": "carpetaCSV",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaCSV",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.Ordenes",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -364,7 +392,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": "Parametrizacion",
-							"carpeta": "CSVS",
+							"carpeta": "CSVS/fprod",
 							"archivo": {
 								"CloudHub.Azure.Storage.Blobs": {
 									"accountUri": "https://storageconrado.blob.core.windows.net/",
