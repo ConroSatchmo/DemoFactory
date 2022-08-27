@@ -35,8 +35,22 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
+				"inputs": [
+					{
+						"referenceName": "carpetaCSV",
+						"type": "DatasetReference"
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "Parquet",
@@ -91,8 +105,22 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
+				"inputs": [
+					{
+						"referenceName": "carpetaCSV",
+						"type": "DatasetReference"
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "Parquet",
@@ -320,8 +348,41 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
+				"inputs": [
+					{
+						"referenceName": "carpetaCSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": "Parametrizacion",
+							"carpeta": "CSVS",
+							"archivo": {
+								"CloudHub.Azure.Storage.Blobs": {
+									"accountUri": "https://storageconrado.blob.core.windows.net/",
+									"sasToken": "sv=2020-10-02&st=2022-08-27T14%3A34%3A01Z&se=2022-09-03T14%3A34%3A01Z&sr=c&sp=rl&sig=KnUeWqhJMjLRd5hnnnL0WcPxujlr6aXgw6p7g3StgeY%3D",
+									"containerName": "ejercitacion",
+									"sourceFolder": "Parametrizacion/CSVS/fprod/",
+									"items": [
+										{
+											"relativePath": "part-00000-tid-9216774913091053202-74deda3a-abfc-4f5c-9b08-1f45a91f2279-5-1-c000.csv",
+											"snapshot": ""
+										}
+									],
+									"service": "gen2"
+								}
+							}
+						}
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "Parquet",
