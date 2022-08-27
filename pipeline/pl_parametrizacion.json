@@ -47,7 +47,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "carpetaCSV",
+						"referenceName": "CarpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -131,7 +131,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "carpetaCSV",
+						"referenceName": "CarpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -212,7 +212,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "carpetaXLSX",
+						"referenceName": "CarpetaXLSX",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -250,6 +250,71 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "dataflowParam",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflowParam",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"CSV": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaCSV",
+									"type": "Expression"
+								},
+								"archivo": {
+									"value": "@pipeline().parameters.ProdDesign",
+									"type": "Expression"
+								}
+							},
+							"XLSX": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaXLSX",
+									"type": "Expression"
+								},
+								"archivo": {
+									"value": "@pipeline().parameters.Stock",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaPARQUET",
+									"type": "Expression"
+								},
+								"archivo": "salida"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			},
 			{
 				"name": "Notebook1",
@@ -323,26 +388,12 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "carpetaCSV",
+						"referenceName": "CarpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": "Parametrizacion",
-							"carpeta": "CSVS/fprod",
-							"archivo": {
-								"CloudHub.Azure.Storage.Blobs": {
-									"accountUri": "https://storageconrado.blob.core.windows.net/",
-									"sasToken": "sv=2020-10-02&st=2022-08-27T14%3A34%3A01Z&se=2022-09-03T14%3A34%3A01Z&sr=c&sp=rl&sig=KnUeWqhJMjLRd5hnnnL0WcPxujlr6aXgw6p7g3StgeY%3D",
-									"containerName": "ejercitacion",
-									"sourceFolder": "Parametrizacion/CSVS/fprod/",
-									"items": [
-										{
-											"relativePath": "part-00000-tid-9216774913091053202-74deda3a-abfc-4f5c-9b08-1f45a91f2279-5-1-c000.csv",
-											"snapshot": ""
-										}
-									],
-									"service": "gen2"
-								}
-							}
+							"carpeta": "CSVS",
+							"archivo": "fprod/part-00000-tid-2230042859577649524-20df3528-64a3-491e-bc4a-6095abb57bec-32-1-c000.csv"
 						}
 					}
 				],
