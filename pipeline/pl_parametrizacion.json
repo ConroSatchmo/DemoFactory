@@ -404,7 +404,7 @@
 									"value": "@pipeline().parameters.carpetaPARQUET",
 									"type": "Expression"
 								},
-								"archivo": "salida"
+								"archivo": "salida.parquet"
 							}
 						},
 						"linkedServiceParameters": {
