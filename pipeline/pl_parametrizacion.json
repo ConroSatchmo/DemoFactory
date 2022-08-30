@@ -310,11 +310,8 @@
 								"value": "@pipeline().parameters.zona",
 								"type": "Expression"
 							},
-							"carpeta": {
-								"value": "@pipeline().parameters.carpetaCSV",
-								"type": "Expression"
-							},
-							"archivo": "fprod/part-00000-tid-3583892735854769520-f40928ab-ffbc-468e-8761-a5b9f77e1dd5-2-1-c000.csv"
+							"carpeta": "CSVS/fprod/",
+							"archivo": "part-00000-tid-3583892735854769520-f40928ab-ffbc-468e-8761-a5b9f77e1dd5-2-1-c000.csv"
 						}
 					}
 				],
