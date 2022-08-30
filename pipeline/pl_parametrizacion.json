@@ -367,20 +367,6 @@
 						"referenceName": "dataflowParams",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"CVSparams": {
-								"zona": {
-									"value": "@pipeline().parameters.zona",
-									"type": "Expression"
-								},
-								"carpeta": {
-									"value": "@pipeline().parameters.carpetaCSV",
-									"type": "Expression"
-								},
-								"archivo": {
-									"value": "@pipeline().parameters.Ordenes",
-									"type": "Expression"
-								}
-							},
 							"XLSXparams": {
 								"zona": {
 									"value": "@pipeline().parameters.zona",
@@ -395,16 +381,19 @@
 									"type": "Expression"
 								}
 							},
-							"Parquetparams": {
+							"CSVSparams": {
 								"zona": {
 									"value": "@pipeline().parameters.zona",
 									"type": "Expression"
 								},
 								"carpeta": {
-									"value": "@pipeline().parameters.carpetaPARQUET",
+									"value": "@pipeline().parameters.carpetaCSV",
 									"type": "Expression"
 								},
-								"archivo": "salida.parquet"
+								"archivo": {
+									"value": "@pipeline().parameters.Ordenes",
+									"type": "Expression"
+								}
 							}
 						}
 					},
