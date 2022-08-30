@@ -367,21 +367,21 @@
 						"referenceName": "dataflowParams",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"XLSXparams": {
+							"ProdDesing": {
 								"zona": {
 									"value": "@pipeline().parameters.zona",
 									"type": "Expression"
 								},
 								"carpeta": {
-									"value": "@pipeline().parameters.carpetaXLSX",
+									"value": "@pipeline().parameters.carpetaCSV",
 									"type": "Expression"
 								},
 								"archivo": {
-									"value": "@pipeline().parameters.Stock",
+									"value": "@pipeline().parameters.ProdDesign",
 									"type": "Expression"
 								}
 							},
-							"CSVSparams": {
+							"Ordenes": {
 								"zona": {
 									"value": "@pipeline().parameters.zona",
 									"type": "Expression"
@@ -405,6 +405,24 @@
 									"type": "Expression"
 								},
 								"archivo": "salida"
+							}
+						},
+						"linkedServiceParameters": {
+							"ProdDesing": {
+								"schemaLinkedService": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaCSV",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.ProdDesign",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					},
