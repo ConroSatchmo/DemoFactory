@@ -47,7 +47,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CarpetaCSV",
+						"referenceName": "carpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -131,7 +131,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CarpetaCSV",
+						"referenceName": "carpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -212,7 +212,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CarpetaXLSX",
+						"referenceName": "carpetaXLSX",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": {
@@ -250,91 +250,6 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "dataflowParam",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "1.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflowParam",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"CSV": {
-								"zona": {
-									"value": "@pipeline().parameters.zona",
-									"type": "Expression"
-								},
-								"carpeta": {
-									"value": "@pipeline().parameters.carpetaCSV",
-									"type": "Expression"
-								},
-								"archivo": {
-									"value": "@pipeline().parameters.ProdDesign",
-									"type": "Expression"
-								}
-							},
-							"XLSX": {
-								"zona": {
-									"value": "@pipeline().parameters.zona",
-									"type": "Expression"
-								},
-								"carpeta": {
-									"value": "@pipeline().parameters.carpetaXLSX",
-									"type": "Expression"
-								},
-								"archivo": {
-									"value": "@pipeline().parameters.Stock",
-									"type": "Expression"
-								}
-							},
-							"sink1": {
-								"zona": {
-									"value": "@pipeline().parameters.zona",
-									"type": "Expression"
-								},
-								"carpeta": {
-									"value": "@pipeline().parameters.carpetaPARQUET",
-									"type": "Expression"
-								},
-								"archivo": "salida"
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
-			},
-			{
-				"name": "Notebook1",
-				"type": "DatabricksNotebook",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"notebookPath": "/Param/Param"
-				},
-				"linkedServiceName": {
-					"referenceName": "AzureDatabricks1",
-					"type": "LinkedServiceReference"
-				}
 			},
 			{
 				"name": "salida",
@@ -388,7 +303,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CarpetaCSV",
+						"referenceName": "carpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
 							"zona": "Parametrizacion",
@@ -414,6 +329,66 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Notebook1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Param/Param"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "dataflow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflowParams",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"CVSparams": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaCSV",
+									"type": "Expression"
+								},
+								"archivo": {
+									"value": "@pipeline().parameters.ProdDesign",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"parameters": {

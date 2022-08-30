@@ -1,0 +1,32 @@
+{
+	"name": "dataflowParams",
+	"properties": {
+		"folder": {
+			"name": "Parametrizacion"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "carpetaCSV",
+						"type": "DatasetReference"
+					},
+					"name": "CVSparams"
+				},
+				{
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> CVSparams",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source2"
+			]
+		}
+	}
+}
