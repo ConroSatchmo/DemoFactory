@@ -4,44 +4,44 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Data Factory name",
+			"metadata": "Nombre de instancia de Data Factory",
 			"defaultValue": "factoriaconrado"
 		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"AzureDataLakeStorage1\""
 		},
 		"AzureDataLakeStorageEjercitacion1_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageEjercitacion1'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"AzureDataLakeStorageEjercitacion1\""
 		},
 		"AzureDatabricks_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks'"
+			"metadata": "Cadena protegida para \"accessToken\"de \"AzureDatabricks\""
 		},
 		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+			"metadata": "Cadena protegida para \"accessToken\"de \"AzureDatabricks1\""
 		},
 		"AzureSqlDatabase1_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSqlDatabase1\""
 		},
 		"DataBricks_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'DataBricks'"
+			"metadata": "Cadena protegida para \"accessToken\"de \"DataBricks\""
 		},
 		"Parademo_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'Parademo'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"Parademo\""
 		},
 		"Storage_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'Storage'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"Storage\""
 		},
 		"linkdata_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'linkdata'"
+			"metadata": "Cadena protegida para \"connectionString\"de \"linkdata\""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -732,21 +732,21 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"XLSXparams": {
+									"ProdDesing": {
 										"zona": {
 											"value": "@pipeline().parameters.zona",
 											"type": "Expression"
 										},
 										"carpeta": {
-											"value": "@pipeline().parameters.carpetaXLSX",
+											"value": "@pipeline().parameters.carpetaCSV",
 											"type": "Expression"
 										},
 										"archivo": {
-											"value": "@pipeline().parameters.Stock",
+											"value": "@pipeline().parameters.ProdDesign",
 											"type": "Expression"
 										}
 									},
-									"CSVSparams": {
+									"Ordenes": {
 										"zona": {
 											"value": "@pipeline().parameters.zona",
 											"type": "Expression"
@@ -770,6 +770,24 @@
 											"type": "Expression"
 										},
 										"archivo": "salida"
+									}
+								},
+								"linkedServiceParameters": {
+									"ProdDesing": {
+										"schemaLinkedService": {
+											"zona": {
+												"value": "@pipeline().parameters.zona",
+												"type": "Expression"
+											},
+											"carpeta": {
+												"value": "@pipeline().parameters.carpetaCSV",
+												"type": "Expression"
+											},
+											"archivo": {
+												"value": "@pipeline().parameters.ProdDesign",
+												"type": "Expression"
+											}
+										}
 									}
 								}
 							},
@@ -2270,17 +2288,17 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "carpetaXLSX",
+								"referenceName": "carpetaCSV",
 								"type": "DatasetReference"
 							},
-							"name": "XLSXparams"
+							"name": "ProdDesing"
 						},
 						{
 							"dataset": {
 								"referenceName": "carpetaCSV",
 								"type": "DatasetReference"
 							},
-							"name": "CSVSparams"
+							"name": "Ordenes"
 						}
 					],
 					"sinks": [
@@ -2289,25 +2307,21 @@
 								"referenceName": "Parquet",
 								"type": "DatasetReference"
 							},
-							"name": "sink1",
-							"rejectedDataLinkedService": {
-								"referenceName": "Storage",
-								"type": "LinkedServiceReference"
-							}
+							"name": "sink1"
 						}
 					],
 					"transformations": [
 						{
-							"name": "millid1"
+							"name": "select2"
+						},
+						{
+							"name": "filter1"
 						},
 						{
 							"name": "select1"
 						},
 						{
-							"name": "select2"
-						},
-						{
-							"name": "join1"
+							"name": "millid"
 						},
 						{
 							"name": "select3"
@@ -2315,64 +2329,68 @@
 					],
 					"scriptLines": [
 						"source(output(",
-						"          stock_record_key as string,",
-						"          mill_id as string,",
-						"          data_source_origin as string,",
-						"          stock_date as date,",
-						"          process_date as double,",
-						"          shift_number as short,",
-						"          storage_type as string,",
-						"          storage_unit_code as string,",
-						"          heat_key as string,",
-						"          mill_production_order_item_key as string,",
-						"          work_order_key as integer,",
-						"          local_product_code as integer,",
-						"          local_product_type as string,",
-						"          stock_type as string,",
-						"          local_material_status as short,",
-						"          stock_classification as string,",
-						"          location_type as string,",
-						"          location_code as string,",
-						"          production_line_id as string,",
-						"          warehouse_key as short,",
-						"          machine_id as string,",
-						"          rfd_flag as string,",
-						"          stock_in_process_flag as string,",
-						"          origin_rolling_mill as string,",
-						"          aging_date as integer,",
-						"          aging_date_name as string,",
-						"          aging_flag as string,",
-						"          stock_mt_qty as double,",
-						"          stock_pc_qty as short,",
-						"          stock_tn_qty as double,",
-						"          stock_kg_qty as double,",
-						"          stock_nominal_tn_qty as string,",
-						"          stock_ft_qty as double,",
-						"          caliber_steel as string,",
-						"          steel_code as string,",
-						"          length_steel as string,",
-						"          tenaris_property_flag as string,",
-						"          origin_mill as string,",
-						"          Heat_Date as string,",
-						"          Order_Heat_Rolling_Date as string,",
-						"          Order_Rolling_Date as string,",
-						"          Order_Aging_Rolling_Date as string,",
-						"          Order_RFD_Date as string,",
-						"          Order_Aging_RFD_Date as string,",
-						"          Order_Reception_Date as string,",
-						"          Order_Reception_Aging_Date as string,",
-						"          Order_First_Process_Date as string,",
-						"          Order_First_Process_Aging_Date as string,",
-						"          RFD_Type as string,",
-						"          Local_material_status_sub_type as string,",
-						"          SurrogateKey as integer,",
-						"          local_material_status_cost as short,",
-						"          Imported_material_flag as string,",
-						"          bill_and_hold_flag as string",
+						"          RunId as string,",
+						"          CreatedBy as string,",
+						"          CreatedTimestamp as string,",
+						"          MillId as string,",
+						"          ProductCode as integer,",
+						"          {product-type} as string,",
+						"          TypeCode as short,",
+						"          Status as string,",
+						"          SteelChemCode as double,",
+						"          SteelGradeCode as short,",
+						"          OdExtMm as double,",
+						"          WtMm as double,",
+						"          HtCode as short,",
+						"          MinLength as double,",
+						"          MaxLength as double,",
+						"          MultAlt2 as short,",
+						"          OdExtIn as double,",
+						"          PPF as double,",
+						"          StartDate as string,",
+						"          LastModifDate as string,",
+						"          CoupCode as integer,",
+						"          MultAlt1 as short,",
+						"          HolCoupCode as short,",
+						"          LastModifUser as string,",
+						"          StartUser as string,",
+						"          WtIn as double,",
+						"          EndDesc as string,",
+						"          Type as string,",
+						"          NormDesc as integer,",
+						"          SubNormDesc as string,",
+						"          SteelGradeDesc as string,",
+						"          EndLongDesc as string,",
+						"          EndCodeOdMin as short,",
+						"          EndCode as short,",
+						"          EndCodeLocal as string,",
+						"          EndCodeDescLoc as string,",
+						"          NormCode as integer,",
+						"          SubNormCode as integer,",
+						"          {Type-prco} as string,",
+						"          {OdExtMm-prco} as double,",
+						"          {WtMm-prco} as double,",
+						"          {WtIn-prco} as double,",
+						"          {EndLongDesc-prco} as string,",
+						"          {SteelGradeDesc-prco} as string,",
+						"          {MinLength-prco} as double,",
+						"          {MaxLength-prco} as double,",
+						"          {NormDesc-prco} as string,",
+						"          {HtCode-prco} as short,",
+						"          {PPF-prco} as double,",
+						"          {ENP-PRCO} as short,",
+						"          {PCK-PRCO} as short,",
+						"          {FIN-PRCO} as string,",
+						"          {FTC-PRCO} as short,",
+						"          {ETC-PRCO} as short,",
+						"          TS_END_COUPLING_FLAG as string,",
+						"          {conforming-route} as string,",
+						"          HolTubeCode as integer,",
+						"          coupling_weight as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> XLSXparams",
+						"     ignoreNoFilesFound: false) ~> ProdDesing",
 						"source(output(",
 						"          Mill_Id as string,",
 						"          Order_Number as integer,",
@@ -2403,32 +2421,8 @@
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> CSVSparams",
-						"XLSXparams filter(mill_id=='1') ~> millid1",
-						"millid1 select(mapColumn(",
-						"          stock_record_key,",
-						"          mill_id,",
-						"          data_source_origin,",
-						"          stock_date,",
-						"          process_date,",
-						"          shift_number,",
-						"          storage_type,",
-						"          storage_unit_code,",
-						"          heat_key,",
-						"          mill_production_order_item_key,",
-						"          work_order_key,",
-						"          local_product_code,",
-						"          local_product_type,",
-						"          stock_type,",
-						"          local_material_status,",
-						"          stock_nominal_tn_qty,",
-						"          stock_ft_qty,",
-						"          caliber_steel,",
-						"          steel_code",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"CSVSparams select(mapColumn(",
+						"     ignoreNoFilesFound: false) ~> Ordenes",
+						"Ordenes select(mapColumn(",
 						"          Mill_Id,",
 						"          Order_Number,",
 						"          Order_Item,",
@@ -2439,21 +2433,39 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select2",
-						"select1, select2 join(select1@mill_id == select2@Mill_Id,",
+						"ProdDesing filter(MillId=='1') ~> filter1",
+						"filter1 select(mapColumn(",
+						"          MillId,",
+						"          ProductCode,",
+						"          {product-type},",
+						"          TypeCode,",
+						"          Status,",
+						"          SteelChemCode,",
+						"          SteelGradeCode,",
+						"          OdExtMm,",
+						"          WtMm,",
+						"          HtCode,",
+						"          MinLength",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1, select2 join(MillId == Mill_Id,",
 						"     joinType:'inner',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join1",
-						"join1 select(mapColumn(",
-						"          stock_record_key,",
-						"          mill_id = select1@mill_id,",
-						"          data_source_origin,",
-						"          stock_date,",
-						"          process_date,",
-						"          work_order_key,",
-						"          local_product_type,",
-						"          stock_type,",
-						"          local_material_status",
+						"     broadcast: 'auto')~> millid",
+						"millid select(mapColumn(",
+						"          MillId,",
+						"          ProductCode,",
+						"          {product-type},",
+						"          TypeCode,",
+						"          Status,",
+						"          Order_Number,",
+						"          Order_Item,",
+						"          Order_Item_Creation_Date,",
+						"          Product_Code,",
+						"          Requested_Tn_Qty,",
+						"          Segment_Id",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select3",
@@ -2497,10 +2509,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/carpetaXLSX')]",
 				"[concat(variables('factoryId'), '/datasets/carpetaCSV')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet')]",
-				"[concat(variables('factoryId'), '/linkedServices/Storage')]"
+				"[concat(variables('factoryId'), '/datasets/Parquet')]"
 			]
 		},
 		{

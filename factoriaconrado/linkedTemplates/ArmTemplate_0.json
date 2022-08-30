@@ -4,44 +4,44 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Data Factory name",
+			"metadata": "Nombre de instancia de Data Factory",
 			"defaultValue": "factoriaconrado"
 		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"AzureDataLakeStorage1\""
 		},
 		"AzureDataLakeStorageEjercitacion1_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageEjercitacion1'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"AzureDataLakeStorageEjercitacion1\""
 		},
 		"AzureDatabricks_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks'"
+			"metadata": "Cadena protegida para \"accessToken\"de \"AzureDatabricks\""
 		},
 		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+			"metadata": "Cadena protegida para \"accessToken\"de \"AzureDatabricks1\""
 		},
 		"AzureSqlDatabase1_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSqlDatabase1\""
 		},
 		"DataBricks_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'DataBricks'"
+			"metadata": "Cadena protegida para \"accessToken\"de \"DataBricks\""
 		},
 		"Parademo_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'Parademo'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"Parademo\""
 		},
 		"Storage_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'Storage'"
+			"metadata": "Cadena protegida para \"accountKey\"de \"Storage\""
 		},
 		"linkdata_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'linkdata'"
+			"metadata": "Cadena protegida para \"connectionString\"de \"linkdata\""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
