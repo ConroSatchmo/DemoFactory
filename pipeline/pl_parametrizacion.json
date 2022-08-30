@@ -306,9 +306,15 @@
 						"referenceName": "carpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
-							"zona": "Parametrizacion",
-							"carpeta": "CSVS",
-							"archivo": "fprod/part-00000-tid-2230042859577649524-20df3528-64a3-491e-bc4a-6095abb57bec-32-1-c000.csv"
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpetaCSV",
+								"type": "Expression"
+							},
+							"archivo": "fprod/part-00000-tid-3583892735854769520-f40928ab-ffbc-468e-8761-a5b9f77e1dd5-2-1-c000.csv"
 						}
 					}
 				],
