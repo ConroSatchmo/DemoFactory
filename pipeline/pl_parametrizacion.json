@@ -394,6 +394,17 @@
 									"value": "@pipeline().parameters.Ordenes",
 									"type": "Expression"
 								}
+							},
+							"sink1": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaPARQUET",
+									"type": "Expression"
+								},
+								"archivo": "salida"
 							}
 						}
 					},
