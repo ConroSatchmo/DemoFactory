@@ -377,7 +377,7 @@
 									"type": "Expression"
 								},
 								"archivo": {
-									"value": "@pipeline().parameters.ProdDesign",
+									"value": "@pipeline().parameters.Ordenes",
 									"type": "Expression"
 								}
 							},
@@ -405,24 +405,6 @@
 									"type": "Expression"
 								},
 								"archivo": "salida.parquet"
-							}
-						},
-						"linkedServiceParameters": {
-							"CVSparams": {
-								"schemaLinkedService": {
-									"zona": {
-										"value": "@pipeline().parameters.zona",
-										"type": "Expression"
-									},
-									"carpeta": {
-										"value": "@pipeline().parameters.carpetaCSV",
-										"type": "Expression"
-									},
-									"archivo": {
-										"value": "@pipeline().parameters.ProdDesign",
-										"type": "Expression"
-									}
-								}
 							}
 						}
 					},
