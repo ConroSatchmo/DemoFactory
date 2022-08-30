@@ -29,7 +29,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat(dataset().zona, '/', dataset().archivo)",
+					"value": "@concat(dataset().zona, '/', dataset().carpeta)",
 					"type": "Expression"
 				},
 				"fileSystem": "ejercitacion"

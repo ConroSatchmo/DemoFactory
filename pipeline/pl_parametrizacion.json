@@ -380,6 +380,49 @@
 									"value": "@pipeline().parameters.ProdDesign",
 									"type": "Expression"
 								}
+							},
+							"XLSXparams": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaXLSX",
+									"type": "Expression"
+								},
+								"archivo": {
+									"value": "@pipeline().parameters.Stock",
+									"type": "Expression"
+								}
+							},
+							"Parquetparams": {
+								"zona": {
+									"value": "@pipeline().parameters.zona",
+									"type": "Expression"
+								},
+								"carpeta": {
+									"value": "@pipeline().parameters.carpetaPARQUET",
+									"type": "Expression"
+								},
+								"archivo": "salida"
+							}
+						},
+						"linkedServiceParameters": {
+							"CVSparams": {
+								"schemaLinkedService": {
+									"zona": {
+										"value": "@pipeline().parameters.zona",
+										"type": "Expression"
+									},
+									"carpeta": {
+										"value": "@pipeline().parameters.carpetaCSV",
+										"type": "Expression"
+									},
+									"archivo": {
+										"value": "@pipeline().parameters.ProdDesign",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					},
