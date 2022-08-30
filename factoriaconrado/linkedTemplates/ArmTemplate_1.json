@@ -463,17 +463,17 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "carpetaCSV",
-								"type": "DatasetReference"
-							},
-							"name": "CVSparams"
-						},
-						{
-							"dataset": {
 								"referenceName": "carpetaXLSX",
 								"type": "DatasetReference"
 							},
 							"name": "XLSXparams"
+						},
+						{
+							"dataset": {
+								"referenceName": "carpetaCSV",
+								"type": "DatasetReference"
+							},
+							"name": "CSVSparams"
 						}
 					],
 					"sinks": [
@@ -482,90 +482,31 @@
 								"referenceName": "Parquet",
 								"type": "DatasetReference"
 							},
-							"name": "Parquetparams"
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "Storage",
+								"type": "LinkedServiceReference"
+							}
 						}
 					],
 					"transformations": [
 						{
-							"name": "select1"
+							"name": "millid1"
 						},
 						{
-							"name": "millid1"
+							"name": "select1"
 						},
 						{
 							"name": "select2"
 						},
 						{
-							"name": "millid"
+							"name": "join1"
 						},
 						{
 							"name": "select3"
 						}
 					],
 					"scriptLines": [
-						"source(output(",
-						"          RunId as string,",
-						"          CreatedBy as string,",
-						"          CreatedTimestamp as string,",
-						"          MillId as string,",
-						"          ProductCode as integer,",
-						"          {product-type} as string,",
-						"          TypeCode as short,",
-						"          Status as string,",
-						"          SteelChemCode as double,",
-						"          SteelGradeCode as short,",
-						"          OdExtMm as double,",
-						"          WtMm as double,",
-						"          HtCode as short,",
-						"          MinLength as double,",
-						"          MaxLength as double,",
-						"          MultAlt2 as short,",
-						"          OdExtIn as double,",
-						"          PPF as double,",
-						"          StartDate as string,",
-						"          LastModifDate as string,",
-						"          CoupCode as integer,",
-						"          MultAlt1 as short,",
-						"          HolCoupCode as short,",
-						"          LastModifUser as string,",
-						"          StartUser as string,",
-						"          WtIn as double,",
-						"          EndDesc as string,",
-						"          Type as string,",
-						"          NormDesc as integer,",
-						"          SubNormDesc as string,",
-						"          SteelGradeDesc as string,",
-						"          EndLongDesc as string,",
-						"          EndCodeOdMin as short,",
-						"          EndCode as short,",
-						"          EndCodeLocal as string,",
-						"          EndCodeDescLoc as string,",
-						"          NormCode as integer,",
-						"          SubNormCode as integer,",
-						"          {Type-prco} as string,",
-						"          {OdExtMm-prco} as double,",
-						"          {WtMm-prco} as double,",
-						"          {WtIn-prco} as double,",
-						"          {EndLongDesc-prco} as string,",
-						"          {SteelGradeDesc-prco} as string,",
-						"          {MinLength-prco} as double,",
-						"          {MaxLength-prco} as double,",
-						"          {NormDesc-prco} as string,",
-						"          {HtCode-prco} as short,",
-						"          {PPF-prco} as double,",
-						"          {ENP-PRCO} as short,",
-						"          {PCK-PRCO} as short,",
-						"          {FIN-PRCO} as string,",
-						"          {FTC-PRCO} as short,",
-						"          {ETC-PRCO} as short,",
-						"          TS_END_COUPLING_FLAG as string,",
-						"          {conforming-route} as string,",
-						"          HolTubeCode as integer,",
-						"          coupling_weight as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> CVSparams",
 						"source(output(",
 						"          stock_record_key as string,",
 						"          mill_id as string,",
@@ -625,33 +566,37 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> XLSXparams",
-						"CVSparams select(mapColumn(",
-						"          MillId,",
-						"          ProductCode,",
-						"          {product-type},",
-						"          TypeCode,",
-						"          Status,",
-						"          SteelChemCode,",
-						"          SteelGradeCode,",
-						"          OdExtMm,",
-						"          WtMm,",
-						"          HtCode,",
-						"          MinLength,",
-						"          MaxLength,",
-						"          MultAlt2,",
-						"          OdExtIn,",
-						"          PPF,",
-						"          StartDate,",
-						"          LastModifDate,",
-						"          CoupCode,",
-						"          MultAlt1,",
-						"          HolCoupCode,",
-						"          LastModifUser,",
-						"          StartUser,",
-						"          WtIn",
+						"source(output(",
+						"          Mill_Id as string,",
+						"          Order_Number as integer,",
+						"          Order_Item as string,",
+						"          Order_Item_Creation_Date as string,",
+						"          Product_Code as string,",
+						"          Requested_Tn_Qty as double,",
+						"          Segment_Id as short,",
+						"          Invoicing_Customer_Id as integer,",
+						"          Production_Order_Key as string,",
+						"          COMM_ORDER_ITM_ID as string,",
+						"          COMM_DOC_LOCATION_CODE as string,",
+						"          COMM_DOC_YEAR as string,",
+						"          COMM_DOC_MONTH as string,",
+						"          COMM_DOC_TYPE as string,",
+						"          COMM_DOC_NUMBER as string,",
+						"          COMM_DOC_ITEM_NUM as string,",
+						"          RFD_Type as string,",
+						"          Order_Rolling_Date as string,",
+						"          Order_Aging_Rolling_Date as string,",
+						"          Order_RFD_Date as string,",
+						"          Order_Aging_RFD_Date as string,",
+						"          Order_Reception_Date as string,",
+						"          Order_Reception_Aging_Date as string,",
+						"          Order_First_Process_Date as string,",
+						"          Order_First_Process_Aging_Date as string,",
+						"          rnd_flag as string",
 						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CSVSparams",
 						"XLSXparams filter(mill_id=='1') ~> millid1",
 						"millid1 select(mapColumn(",
 						"          stock_record_key,",
@@ -675,46 +620,33 @@
 						"          steel_code",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"CSVSparams select(mapColumn(",
+						"          Mill_Id,",
+						"          Order_Number,",
+						"          Order_Item,",
+						"          Order_Item_Creation_Date,",
+						"          Product_Code,",
+						"          Requested_Tn_Qty,",
+						"          Segment_Id",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select2",
-						"select2, select1 join(mill_id == MillId,",
+						"select1, select2 join(select1@mill_id == select2@Mill_Id,",
 						"     joinType:'inner',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> millid",
-						"millid select(mapColumn(",
+						"     broadcast: 'auto')~> join1",
+						"join1 select(mapColumn(",
 						"          stock_record_key,",
-						"          mill_id,",
+						"          mill_id = select1@mill_id,",
 						"          data_source_origin,",
 						"          stock_date,",
 						"          process_date,",
-						"          shift_number,",
-						"          storage_type,",
-						"          storage_unit_code,",
-						"          heat_key,",
-						"          mill_production_order_item_key,",
 						"          work_order_key,",
-						"          local_product_code,",
 						"          local_product_type,",
 						"          stock_type,",
-						"          local_material_status,",
-						"          stock_nominal_tn_qty,",
-						"          stock_ft_qty,",
-						"          caliber_steel,",
-						"          steel_code,",
-						"          ProductCode,",
-						"          SteelChemCode,",
-						"          SteelGradeCode,",
-						"          MinLength,",
-						"          MaxLength,",
-						"          MultAlt2,",
-						"          OdExtIn,",
-						"          PPF,",
-						"          StartDate,",
-						"          LastModifDate,",
-						"          CoupCode,",
-						"          MultAlt1,",
-						"          StartUser,",
-						"          WtIn",
+						"          local_material_status",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select3",
@@ -753,7 +685,7 @@
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> Parquetparams"
+						"     skipDuplicateMapOutputs: true) ~> sink1"
 					]
 				}
 			},
@@ -1477,20 +1409,6 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"CVSparams": {
-										"zona": {
-											"value": "@pipeline().parameters.zona",
-											"type": "Expression"
-										},
-										"carpeta": {
-											"value": "@pipeline().parameters.carpetaCSV",
-											"type": "Expression"
-										},
-										"archivo": {
-											"value": "@pipeline().parameters.Ordenes",
-											"type": "Expression"
-										}
-									},
 									"XLSXparams": {
 										"zona": {
 											"value": "@pipeline().parameters.zona",
@@ -1505,7 +1423,21 @@
 											"type": "Expression"
 										}
 									},
-									"Parquetparams": {
+									"CSVSparams": {
+										"zona": {
+											"value": "@pipeline().parameters.zona",
+											"type": "Expression"
+										},
+										"carpeta": {
+											"value": "@pipeline().parameters.carpetaCSV",
+											"type": "Expression"
+										},
+										"archivo": {
+											"value": "@pipeline().parameters.Ordenes",
+											"type": "Expression"
+										}
+									},
+									"sink1": {
 										"zona": {
 											"value": "@pipeline().parameters.zona",
 											"type": "Expression"
@@ -1514,7 +1446,7 @@
 											"value": "@pipeline().parameters.carpetaPARQUET",
 											"type": "Expression"
 										},
-										"archivo": "salida.parquet"
+										"archivo": "salida"
 									}
 								}
 							},
