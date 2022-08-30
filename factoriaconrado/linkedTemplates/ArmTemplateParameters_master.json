@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "factoriaconrado"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorageEjercitacion1_accountKey": {
+			"value": ""
+		},
+		"AzureDatabricks_accessToken": {
+			"value": ""
+		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"DataBricks_accessToken": {
+			"value": ""
+		},
+		"Parademo_accountKey": {
+			"value": ""
+		},
+		"Storage_accountKey": {
+			"value": ""
+		},
+		"linkdata_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://datalakefactoryconrado.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorageEjercitacion1_properties_typeProperties_url": {
+			"value": "https://datalakefactoryconrado.dfs.core.windows.net/"
+		},
+		"AzureDatabricks_properties_typeProperties_existingClusterId": {
+			"value": "0826-155323-f0w1nnse"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"value": "0729-141314-gpegce2c"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://almacenconrado.vault.azure.net/"
+		},
+		"Parademo_properties_typeProperties_url": {
+			"value": "https://datalakefactoryconrado.dfs.core.windows.net/"
+		},
+		"Storage_properties_typeProperties_url": {
+			"value": "https://storageconrado.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
