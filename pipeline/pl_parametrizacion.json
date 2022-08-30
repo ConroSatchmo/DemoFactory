@@ -306,10 +306,7 @@
 						"referenceName": "carpetaCSV",
 						"type": "DatasetReference",
 						"parameters": {
-							"zona": {
-								"value": "@pipeline().parameters.zona",
-								"type": "Expression"
-							},
+							"zona": "Parametrizacion",
 							"carpeta": "CSVS/fprod/",
 							"archivo": "part-00000-tid-3583892735854769520-f40928ab-ffbc-468e-8761-a5b9f77e1dd5-2-1-c000.csv"
 						}
