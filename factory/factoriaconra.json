@@ -1,0 +1,9 @@
+{
+	"name": "factoriaconra",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b4495f39-a0b6-479a-90c7-077266171238",
+		"tenantId": "326907af-d755-488e-9edf-ea7f847c03bd"
+	}
+}
