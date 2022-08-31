@@ -346,7 +346,7 @@
 					"notebookPath": "/Param/Param"
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureDatabricks",
+					"referenceName": "AzureDatabricksconra",
 					"type": "LinkedServiceReference"
 				}
 			},
@@ -405,24 +405,6 @@
 									"type": "Expression"
 								},
 								"archivo": "salida"
-							}
-						},
-						"linkedServiceParameters": {
-							"ProdDesing": {
-								"schemaLinkedService": {
-									"zona": {
-										"value": "@pipeline().parameters.zona",
-										"type": "Expression"
-									},
-									"carpeta": {
-										"value": "@pipeline().parameters.carpetaCSV",
-										"type": "Expression"
-									},
-									"archivo": {
-										"value": "@pipeline().parameters.ProdDesign",
-										"type": "Expression"
-									}
-								}
 							}
 						}
 					},

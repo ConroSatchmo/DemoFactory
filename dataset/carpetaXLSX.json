@@ -2,7 +2,7 @@
 	"name": "carpetaXLSX",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Storage",
+			"referenceName": "storageconra",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
@@ -22,7 +22,6 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
-			"sheetName": "Sheet1",
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {

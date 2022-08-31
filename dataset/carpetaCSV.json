@@ -2,7 +2,7 @@
 	"name": "carpetaCSV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Storage",
+			"referenceName": "storageconra",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
