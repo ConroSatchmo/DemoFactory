@@ -1,0 +1,9 @@
+{
+	"name": "factoriachallenge",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ae12e2d3-1c3a-4bc4-bd39-66f54904948b",
+		"tenantId": "3048dc87-43f0-4100-9acb-ae1971c79395"
+	}
+}
