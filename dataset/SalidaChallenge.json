@@ -1,0 +1,41 @@
+{
+	"name": "SalidaChallenge",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storageconra",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"zona": {
+				"type": "String"
+			},
+			"carpeta": {
+				"type": "string"
+			},
+			"archivo": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "challenge"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('SalesLT.',dataset().archivo,'.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat(dataset().zona,'/',dataset().carpeta)",
+					"type": "Expression"
+				},
+				"fileSystem": "ejercitacion"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
