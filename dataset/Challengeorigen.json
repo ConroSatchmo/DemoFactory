@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"Filename": {
+			"archivo": {
 				"type": "string"
 			}
 		},
@@ -19,7 +19,7 @@
 		"typeProperties": {
 			"schema": "SalesLT",
 			"table": {
-				"value": "@dataset().Filename",
+				"value": "@dataset().archivo",
 				"type": "Expression"
 			}
 		}

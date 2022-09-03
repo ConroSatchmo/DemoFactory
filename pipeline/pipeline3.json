@@ -20,15 +20,52 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "Challengeorigen",
 						"type": "DatasetReference",
 						"parameters": {
-							"Filename": {
+							"archivo": {
 								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SalidaChallenge",
+						"type": "DatasetReference",
+						"parameters": {
+							"zona": {
+								"value": "@pipeline().parameters.zona",
+								"type": "Expression"
+							},
+							"carpeta": {
+								"value": "@pipeline().parameters.carpeta",
+								"type": "Expression"
+							},
+							"archivo": {
+								"value": "@pipeline().parameters.archivo",
 								"type": "Expression"
 							}
 						}
@@ -38,6 +75,15 @@
 		],
 		"parameters": {
 			"FileName": {
+				"type": "String"
+			},
+			"zona": {
+				"type": "String"
+			},
+			"carpeta": {
+				"type": "String"
+			},
+			"archivo": {
 				"type": "String"
 			}
 		},
