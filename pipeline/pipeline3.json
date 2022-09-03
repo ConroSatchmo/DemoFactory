@@ -74,9 +74,6 @@
 			}
 		],
 		"parameters": {
-			"FileName": {
-				"type": "String"
-			},
 			"zona": {
 				"type": "String"
 			},
