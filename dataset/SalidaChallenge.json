@@ -11,6 +11,9 @@
 			},
 			"zona": {
 				"type": "String"
+			},
+			"archivo": {
+				"type": "string"
 			}
 		},
 		"folder": {
@@ -21,7 +24,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "salida",
+				"fileName": {
+					"value": "@dataset().archivo",
+					"type": "Expression"
+				},
 				"folderPath": {
 					"value": "@concat(dataset().zona,'/',dataset().carpeta)",
 					"type": "Expression"

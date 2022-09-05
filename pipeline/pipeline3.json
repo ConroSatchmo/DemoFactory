@@ -33,6 +33,26 @@
 								"carpeta": {
 									"value": "@pipeline().parameters.carpeta",
 									"type": "Expression"
+								},
+								"zona": "Bronze",
+								"archivo": {
+									"value": "@pipeline().parameters.archivo",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceParameters": {
+							"sink1": {
+								"schemaLinkedService": {
+									"carpeta": {
+										"value": "@pipeline().parameters.carpeta",
+										"type": "Expression"
+									},
+									"zona": "Bronze",
+									"archivo": {
+										"value": "@pipeline().parameters.archivo",
+										"type": "Expression"
+									}
 								}
 							}
 						}
@@ -59,6 +79,9 @@
 				"type": "String"
 			},
 			"archivo": {
+				"type": "String"
+			},
+			"zona": {
 				"type": "String"
 			}
 		},
