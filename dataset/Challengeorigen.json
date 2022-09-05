@@ -6,8 +6,11 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"archivo": {
+			"TableName": {
 				"type": "string"
+			},
+			"SchemaName": {
+				"type": "String"
 			}
 		},
 		"folder": {
@@ -17,9 +20,12 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "SalesLT",
+			"schema": {
+				"value": "@dataset().SchemaName",
+				"type": "Expression"
+			},
 			"table": {
-				"value": "@dataset().archivo",
+				"value": "@dataset().TableName",
 				"type": "Expression"
 			}
 		}

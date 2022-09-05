@@ -6,14 +6,11 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"zona": {
-				"type": "String"
-			},
 			"carpeta": {
 				"type": "string"
 			},
-			"archivo": {
-				"type": "string"
+			"zona": {
+				"type": "String"
 			}
 		},
 		"folder": {
@@ -24,15 +21,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@concat('SalesLT.',dataset().archivo,'.parquet')",
-					"type": "Expression"
-				},
+				"fileName": "salida",
 				"folderPath": {
 					"value": "@concat(dataset().zona,'/',dataset().carpeta)",
 					"type": "Expression"
 				},
-				"fileSystem": "ejercitacion"
+				"fileSystem": "adventureworks"
 			},
 			"compressionCodec": "snappy"
 		},

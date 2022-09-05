@@ -1,0 +1,70 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "dataflow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"TableName": {
+									"value": "@pipeline().parameters.TableName",
+									"type": "Expression"
+								},
+								"SchemaName": {
+									"value": "@pipeline().parameters.SchemaName",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"carpeta": {
+									"value": "@pipeline().parameters.carpeta",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine",
+					"continuationSettings": {
+						"customizedCheckpointKey": "d52265a7-1f6e-4dfc-b574-5dcc58e54708"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"TableName": {
+				"type": "String"
+			},
+			"SchemaName": {
+				"type": "String"
+			},
+			"carpeta": {
+				"type": "String"
+			},
+			"archivo": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "challenge"
+		},
+		"annotations": []
+	}
+}
