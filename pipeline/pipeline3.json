@@ -30,27 +30,13 @@
 								}
 							},
 							"sink1": {
-								"zona": {
-									"value": "@pipeline().parameters.zona",
+								"carpeta": {
+									"value": "@pipeline().parameters.carpeta",
 									"type": "Expression"
 								},
 								"archivo": {
 									"value": "@pipeline().parameters.archivo",
 									"type": "Expression"
-								}
-							}
-						},
-						"linkedServiceParameters": {
-							"sink1": {
-								"schemaLinkedService": {
-									"zona": {
-										"value": "@pipeline().parameters.zona",
-										"type": "Expression"
-									},
-									"archivo": {
-										"value": "@pipeline().parameters.archivo",
-										"type": "Expression"
-									}
 								}
 							}
 						}
@@ -61,7 +47,7 @@
 					},
 					"traceLevel": "Fine",
 					"continuationSettings": {
-						"customizedCheckpointKey": "d52265a7-1f6e-4dfc-b574-5dcc58e54708"
+						"customizedCheckpointKey": "40e52cd5-7017-4353-8f52-46d4bcf92497"
 					}
 				}
 			}
@@ -73,14 +59,11 @@
 			"SchemaName": {
 				"type": "String"
 			},
-			"carpeta": {
-				"type": "String"
-			},
 			"archivo": {
 				"type": "String"
 			},
-			"zona": {
-				"type": "String"
+			"carpeta": {
+				"type": "string"
 			}
 		},
 		"folder": {
