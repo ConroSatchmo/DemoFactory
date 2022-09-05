@@ -30,11 +30,10 @@
 								}
 							},
 							"sink1": {
-								"carpeta": {
-									"value": "@pipeline().parameters.carpeta",
+								"zona": {
+									"value": "@pipeline().parameters.zona",
 									"type": "Expression"
 								},
-								"zona": "Bronze",
 								"archivo": {
 									"value": "@pipeline().parameters.archivo",
 									"type": "Expression"
@@ -44,11 +43,10 @@
 						"linkedServiceParameters": {
 							"sink1": {
 								"schemaLinkedService": {
-									"carpeta": {
-										"value": "@pipeline().parameters.carpeta",
+									"zona": {
+										"value": "@pipeline().parameters.zona",
 										"type": "Expression"
 									},
-									"zona": "Bronze",
 									"archivo": {
 										"value": "@pipeline().parameters.archivo",
 										"type": "Expression"

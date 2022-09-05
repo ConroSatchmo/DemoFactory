@@ -6,14 +6,11 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"carpeta": {
-				"type": "string"
-			},
 			"zona": {
 				"type": "String"
 			},
 			"archivo": {
-				"type": "string"
+				"type": "String"
 			}
 		},
 		"folder": {
@@ -25,13 +22,10 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().archivo",
+					"value": "@concat(dataset().zona,'/',dataset().archivo)",
 					"type": "Expression"
 				},
-				"folderPath": {
-					"value": "@concat(dataset().zona,'/',dataset().carpeta)",
-					"type": "Expression"
-				},
+				"folderPath": "Bronze",
 				"fileSystem": "adventureworks"
 			},
 			"compressionCodec": "snappy"
