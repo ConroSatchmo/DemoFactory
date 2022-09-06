@@ -1,9 +1,9 @@
 {
-	"name": "delta",
+	"name": "AW_historic_load",
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Lookup-Sql-Tables",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -29,11 +29,11 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEach-SqlTables",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Lookup-Sql-Tables",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -42,7 +42,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('Lookup-Sql-Tables').output.value",
 						"type": "Expression"
 					},
 					"activities": [
@@ -123,14 +123,18 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureDatabricksconra",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
 			}
 		],
 		"folder": {
-			"name": "adventureworks/historic"
+			"name": "adventureworks/to_raw_data/historic"
 		},
 		"annotations": []
 	}
