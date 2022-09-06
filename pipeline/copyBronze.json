@@ -1,9 +1,9 @@
 {
-	"name": "pipeline3",
+	"name": "copyBronze",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow1",
+				"name": "copyIncremental",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "copyIncremental",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"source1": {
@@ -47,7 +47,7 @@
 					},
 					"traceLevel": "Fine",
 					"continuationSettings": {
-						"customizedCheckpointKey": "ad25dbf3-307b-4a9f-9894-9a255aaec543"
+						"customizedCheckpointKey": "a35bc4d3-e930-4e75-9aea-9e613c8739b6"
 					}
 				}
 			}
@@ -67,7 +67,7 @@
 			}
 		},
 		"folder": {
-			"name": "challenge"
+			"name": "adventureworks"
 		},
 		"annotations": []
 	}
