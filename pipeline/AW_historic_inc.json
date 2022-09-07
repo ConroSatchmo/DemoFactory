@@ -108,7 +108,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"carpeta": {
-											"value": "@item().TABLE_NAME",
+											"value": "@concat(formatDateTime(utcnow(), 'yyyy-dd-MM'),'/',item().TABLE_NAME)\n",
 											"type": "Expression"
 										},
 										"archivo": {
