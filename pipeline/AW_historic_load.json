@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME \n    FROM INFORMATION_SCHEMA.TABLES\n    WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA != 'dbo'",
+						"sqlReaderQuery": "SELECT TABLE_SCHEMA, TABLE_NAME \n    FROM INFORMATION_SCHEMA.TABLES\n    WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA != 'dbo'\nAND TABLE_NAME NOT IN ('SalesOrderDetail', 'SalesOrderHeader')",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
