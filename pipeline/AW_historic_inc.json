@@ -112,12 +112,77 @@
 											"type": "Expression"
 										},
 										"archivo": {
-											"value": "@concat(item().TABLE_SCHEMA,'_',item().TABLE_NAME,formatDateTime(utcnow(), 'yyyy-dd-MM'),'.parquet')",
+											"value": "@concat(item().TABLE_SCHEMA,'_',item().TABLE_NAME,'_',formatDateTime(utcnow(), 'yyyy-dd-MM'),'.parquet')",
 											"type": "Expression"
 										}
 									}
 								}
 							]
+						},
+						{
+							"name": "Stored procedure1",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "CopiaBronze",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[UPDATE_LOAD_LOGS]",
+								"storedProcedureParameters": {
+									"DATABASE_NAME": {
+										"value": "AdventureWorks",
+										"type": "String"
+									},
+									"LOAD_DATE": {
+										"value": {
+											"value": "@formatDateTime(utcnow(), 'yyyy-dd-MM')",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"LOAD_TYPE": {
+										"value": "Historic",
+										"type": "String"
+									},
+									"ROWS_LOADED": {
+										"value": {
+											"value": "@activity('CopiaBronze').output.rowsCopied",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"TABLE_NAME": {
+										"value": {
+											"value": "@item().TABLE_NAME",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TABLE_SCHEMA": {
+										"value": {
+											"value": "@item().TABLE_SCHEMA",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "DBparaSP",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
