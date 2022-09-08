@@ -1,0 +1,80 @@
+{
+	"name": "execute_pl_historic_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute AW_histori_load",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "AW_historic_load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Execute AW_histori_load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-43.eastus.logic.azure.com:443/workflows/6b005bc05e08415c9ded02ee65ae84bc/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_nBvjVrCjABBrOnMv-2wX7esZObZ6gHBLqZUuMjeXqk",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"title\": \"PIPELINE EJECUTADO\",\n    \"message\": \"PIPELINE EJECUTADO CON EXITO\",\n    \"color\": \"GREEN\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcnow()}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Mail error",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Execute AW_histori_load",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-43.eastus.logic.azure.com:443/workflows/6b005bc05e08415c9ded02ee65ae84bc/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_nBvjVrCjABBrOnMv-2wX7esZObZ6gHBLqZUuMjeXqk",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"title\": \"PIPELINE MAL EJECUTADO\",\n    \"message\": \"@{activity('Execute AW_histori_load').error.message}\",\n    \"color\": \"RED\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcnow()}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "adventureworks/to_raw_data/historic"
+		},
+		"annotations": []
+	}
+}

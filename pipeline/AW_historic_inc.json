@@ -108,11 +108,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"carpeta": {
-											"value": "@concat(formatDateTime(utcnow(), 'yyyy-dd-MM'),'/',item().TABLE_NAME)\n",
+											"value": "@item().TABLE_NAME\n",
 											"type": "Expression"
 										},
 										"archivo": {
-											"value": "@concat(item().TABLE_SCHEMA,'_',item().TABLE_NAME,'_',formatDateTime(utcnow(), 'yyyy-dd-MM'),'.parquet')",
+											"value": "@concat(item().TABLE_SCHEMA,'_',item().TABLE_NAME,'.parquet')",
 											"type": "Expression"
 										}
 									}

@@ -1,0 +1,48 @@
+{
+	"name": "AW_delta",
+	"properties": {
+		"activities": [
+			{
+				"name": "copyIncremental",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "copyIncremental",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"SalidaOderDetail": {
+								"carpeta": "SalesOrderDetail",
+								"archivo": "SalesOrderDetail.parquet"
+							},
+							"SalidaOrderHeader": {
+								"carpeta": "SalesOrderHeader",
+								"archivo": "SalesOrderHeader.parquet"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine",
+					"continuationSettings": {
+						"customizedCheckpointKey": "90c95059-71aa-4e5e-bc42-52c49eebeb10"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "adventureworks/to_raw_data/historic"
+		},
+		"annotations": []
+	}
+}
