@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "EpisodesScripts/Episodes_Scripts.csv",
+				"fileName": "EpisodesScripts/EpisodesCripts.csv",
 				"folderPath": "Simpsons/Silver",
 				"fileSystem": "octubre"
 			},
