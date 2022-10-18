@@ -1,9 +1,9 @@
 {
-	"name": "AW_historic_load",
+	"name": "pl_octubre",
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup-Sql-Tables",
+				"name": "BusquedaDB",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -15,15 +15,33 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"firstRowOnly": false
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "EntradaDB",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": {
+								"value": "@pipeline().parameters.Schema",
+								"type": "Expression"
+							},
+							"Table": {
+								"value": "@pipeline().parameters.Table",
+								"type": "Expression"
+							}
+						}
+					}
 				}
 			},
 			{
-				"name": "ForEach-SqlTables",
+				"name": "ForEach1",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup-Sql-Tables",
+						"activity": "BusquedaDB",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -32,12 +50,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup-Sql-Tables').output.value",
+						"value": "@activity('BusquedaDB').output.value",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "CopiaBronze",
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -52,7 +70,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('SELECT * FROM ',item().TABLE_SCHEMA, '.', item().TABLE_NAME)",
+										"value": "@concat('SELECT * FROM ',item().TABLE_SCHEMA, '.', item().TABLE_NAME WHERE item().TABLE_SCHEMA NOT IN ('dbo') )",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -67,25 +85,26 @@
 										"type": "ParquetWriteSettings"
 									}
 								},
-								"enableStaging": true,
-								"stagingSettings": {
-									"linkedServiceName": {
-										"referenceName": "storageconra",
-										"type": "LinkedServiceReference"
-									},
-									"path": "adventureworks/Bronze/Temp"
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
 								}
 							},
 							"inputs": [
 								{
-									"referenceName": "AzureSqlTable3",
+									"referenceName": "EntradaDB",
 									"type": "DatasetReference",
 									"parameters": {
 										"Schema": {
 											"value": "@item().TABLE_SCHEMA",
 											"type": "Expression"
 										},
-										"Tabla": {
+										"Table": {
 											"value": "@item().TABLE_NAME",
 											"type": "Expression"
 										}
@@ -94,7 +113,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "SalidaChallenge",
+									"referenceName": "ParquetSalidaOctubre",
 									"type": "DatasetReference",
 									"parameters": {
 										"carpeta": {
@@ -113,8 +132,16 @@
 				}
 			}
 		],
+		"parameters": {
+			"Schema": {
+				"type": "String"
+			},
+			"Table": {
+				"type": "String"
+			}
+		},
 		"folder": {
-			"name": "adventureworks/to_raw_data/historic"
+			"name": "PruebaOctubre"
 		},
 		"annotations": []
 	}
