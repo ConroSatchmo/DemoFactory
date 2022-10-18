@@ -39,7 +39,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SalidaCSV",
+						"referenceName": "SalidaCSV2",
 						"type": "DatasetReference"
 					},
 					"name": "SalidaSimpsons2"
