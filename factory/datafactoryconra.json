@@ -1,0 +1,9 @@
+{
+	"name": "datafactoryconra",
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4ddd8af9-c22c-415f-b5ac-3d85e1cb4f8d",
+		"tenantId": "9866d1f5-3989-48dc-9754-bb0f9dd5971d"
+	}
+}
