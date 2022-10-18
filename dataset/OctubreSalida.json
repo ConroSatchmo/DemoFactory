@@ -1,0 +1,32 @@
+{
+	"name": "OctubreSalida",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PruebaOctubre"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": "AW",
+				"fileSystem": "octubre"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
