@@ -23,24 +23,48 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "Locations",
-						"type": "DatasetReference"
-					},
-					"name": "LocationsSource"
-				},
-				{
-					"dataset": {
 						"referenceName": "Script_lines",
 						"type": "DatasetReference"
 					},
 					"name": "ScriptLinesSources"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SalidaCSV",
+						"type": "DatasetReference"
+					},
+					"name": "salidaSimpsons1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalidaCSV",
+						"type": "DatasetReference"
+					},
+					"name": "SalidaSimpsons2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Espisodes"
+				},
+				{
+					"name": "Characters"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "InnerJoinEpisodesScripts"
+				},
+				{
+					"name": "select1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          name as string,",
 				"          normalized_name as string,",
 				"          gender as string",
@@ -49,7 +73,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> CharactersSource",
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          image_url as string,",
 				"          imdb_rating as string,",
 				"          imdb_votes as string,",
@@ -68,21 +92,13 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> EpisodesSource",
 				"source(output(",
-				"          id as string,",
-				"          name as string,",
-				"          normalized_name as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> LocationsSource",
-				"source(output(",
-				"          id as string,",
-				"          episode_id as string,",
-				"          number as string,",
+				"          id as integer,",
+				"          episode_id as integer,",
+				"          number as integer,",
 				"          raw_text as string,",
-				"          timestamp_in_ms as string,",
+				"          timestamp_in_ms as timestamp,",
 				"          speaking_line as string,",
-				"          character_id as string,",
+				"          character_id as integer,",
 				"          location_id as string,",
 				"          raw_character_text as string,",
 				"          raw_location_text as string,",
@@ -92,7 +108,84 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> ScriptLinesSources"
+				"     ignoreNoFilesFound: false) ~> ScriptLinesSources",
+				"EpisodesSource select(mapColumn(",
+				"          id,",
+				"          image_url,",
+				"          imdb_rating,",
+				"          imdb_votes,",
+				"          number_in_season,",
+				"          number_in_series,",
+				"          original_air_date,",
+				"          original_air_year,",
+				"          production_code,",
+				"          temporada = season,",
+				"          titulo = title,",
+				"          us_viewers_in_millions,",
+				"          video_url,",
+				"          vistas = views",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> Espisodes",
+				"CharactersSource select(mapColumn(",
+				"          id,",
+				"          nombre = name,",
+				"          nombre = normalized_name,",
+				"          gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> Characters",
+				"Characters filter(gender!='NULL') ~> filter1",
+				"Espisodes, ScriptLinesSources join(Espisodes@id == episode_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> InnerJoinEpisodesScripts",
+				"InnerJoinEpisodesScripts select(mapColumn(",
+				"          id = Espisodes@id,",
+				"          image_url,",
+				"          imdb_rating,",
+				"          imdb_votes,",
+				"          number_in_season,",
+				"          number_in_series,",
+				"          original_air_date,",
+				"          original_air_year,",
+				"          production_code,",
+				"          temporada,",
+				"          titulo,",
+				"          us_viewers_in_millions,",
+				"          video_url,",
+				"          vistas,",
+				"          id = ScriptLinesSources@id,",
+				"          episode_id,",
+				"          number,",
+				"          raw_text,",
+				"          timestamp_in_ms,",
+				"          speaking_line,",
+				"          character_id,",
+				"          location_id,",
+				"          raw_character_text,",
+				"          raw_location_text,",
+				"          spoken_words,",
+				"          normalized_text,",
+				"          word_count",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> salidaSimpsons1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SalidaSimpsons2"
 			]
 		}
 	}
