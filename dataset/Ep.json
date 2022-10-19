@@ -1,12 +1,12 @@
 {
-	"name": "Episodes",
+	"name": "Ep",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage2",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Simpsons"
+			"name": "OctubreS"
 		},
 		"annotations": [],
 		"type": "DelimitedText",

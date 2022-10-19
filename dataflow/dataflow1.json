@@ -2,28 +2,28 @@
 	"name": "dataflow1",
 	"properties": {
 		"folder": {
-			"name": "Simpsons"
+			"name": "OctubreS"
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Characters",
+						"referenceName": "Ch",
 						"type": "DatasetReference"
 					},
 					"name": "CharactersSource"
 				},
 				{
 					"dataset": {
-						"referenceName": "Episodes",
+						"referenceName": "Ep",
 						"type": "DatasetReference"
 					},
 					"name": "EpisodesSource"
 				},
 				{
 					"dataset": {
-						"referenceName": "Script_lines",
+						"referenceName": "Sc",
 						"type": "DatasetReference"
 					},
 					"name": "ScriptLinesSources"

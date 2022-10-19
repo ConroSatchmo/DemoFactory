@@ -1,12 +1,12 @@
 {
-	"name": "Characters",
+	"name": "Ch",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage2",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Simpsons"
+			"name": "OctubreS"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
