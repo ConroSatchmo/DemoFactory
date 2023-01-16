@@ -1,0 +1,9 @@
+{
+	"name": "ClaseDF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ce284b59-0b48-4583-b99c-d57509f549e2",
+		"tenantId": "3048dc87-43f0-4100-9acb-ae1971c79395"
+	}
+}
