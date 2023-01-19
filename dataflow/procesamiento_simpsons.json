@@ -1,0 +1,48 @@
+{
+	"name": "procesamiento_simpsons",
+	"properties": {
+		"folder": {
+			"name": "clasedf"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "entrada_characters",
+						"type": "DatasetReference"
+					},
+					"name": "characters"
+				},
+				{
+					"name": "episodes"
+				},
+				{
+					"name": "scripts"
+				},
+				{
+					"name": "locations"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          name as string,",
+				"          normalized_name as string,",
+				"          gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> characters",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> episodes",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> scripts",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> locations"
+			]
+		}
+	}
+}
