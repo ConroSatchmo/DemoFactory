@@ -15,20 +15,39 @@
 					"name": "characters"
 				},
 				{
+					"dataset": {
+						"referenceName": "entrada_episodes",
+						"type": "DatasetReference"
+					},
 					"name": "episodes"
 				},
 				{
+					"dataset": {
+						"referenceName": "entrada_scripts",
+						"type": "DatasetReference"
+					},
 					"name": "scripts"
 				},
 				{
+					"dataset": {
+						"referenceName": "entrada_locations",
+						"type": "DatasetReference"
+					},
 					"name": "locations"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "selectcharacters"
+				},
+				{
+					"name": "filter1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          name as string,",
 				"          normalized_name as string,",
 				"          gender as string",
@@ -36,12 +55,59 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> characters",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> episodes",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> scripts",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> locations"
+				"source(output(",
+				"          id as string,",
+				"          image_url as string,",
+				"          imdb_rating as string,",
+				"          imdb_votes as string,",
+				"          number_in_season as string,",
+				"          number_in_series as string,",
+				"          original_air_date as string,",
+				"          original_air_year as string,",
+				"          production_code as string,",
+				"          season as string,",
+				"          title as string,",
+				"          us_viewers_in_millions as string,",
+				"          video_url as string,",
+				"          views as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> episodes",
+				"source(output(",
+				"          id as string,",
+				"          episode_id as string,",
+				"          number as string,",
+				"          raw_text as string,",
+				"          timestamp_in_ms as string,",
+				"          speaking_line as string,",
+				"          character_id as string,",
+				"          location_id as string,",
+				"          raw_character_text as string,",
+				"          raw_location_text as string,",
+				"          spoken_words as string,",
+				"          normalized_text as string,",
+				"          word_count as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> scripts",
+				"source(output(",
+				"          id as string,",
+				"          name as string,",
+				"          normalized_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> locations",
+				"characters select(mapColumn(",
+				"          id,",
+				"          nombre = normalized_name,",
+				"          genero = gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectcharacters",
+				"selectcharacters filter(ERROR_FUNCTION('')) ~> filter1"
 			]
 		}
 	}
