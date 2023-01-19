@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "peliculas/",
+				"fileName": "peliculas/peliculas.csv",
 				"folderPath": "Raw",
 				"fileSystem": "clasedf"
 			},
