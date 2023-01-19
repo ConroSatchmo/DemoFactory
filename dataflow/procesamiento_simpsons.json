@@ -36,13 +36,47 @@
 					"name": "locations"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "salida_characters",
+						"type": "DatasetReference"
+					},
+					"name": "salidacharacters"
+				},
+				{
+					"dataset": {
+						"referenceName": "salida_locations",
+						"type": "DatasetReference"
+					},
+					"name": "salidalocations"
+				},
+				{
+					"dataset": {
+						"referenceName": "salida_episodes_scripts",
+						"type": "DatasetReference"
+					},
+					"name": "salidaepisodesscripts"
+				}
+			],
 			"transformations": [
 				{
 					"name": "selectcharacters"
 				},
 				{
-					"name": "filter1"
+					"name": "filtergeneronull"
+				},
+				{
+					"name": "selectlocations"
+				},
+				{
+					"name": "selectepisodes"
+				},
+				{
+					"name": "selectscripts"
+				},
+				{
+					"name": "episodesscripts"
 				}
 			],
 			"scriptLines": [
@@ -56,33 +90,33 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> characters",
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          image_url as string,",
 				"          imdb_rating as string,",
 				"          imdb_votes as string,",
-				"          number_in_season as string,",
-				"          number_in_series as string,",
-				"          original_air_date as string,",
-				"          original_air_year as string,",
+				"          number_in_season as integer,",
+				"          number_in_series as integer,",
+				"          original_air_date as date,",
+				"          original_air_year as date,",
 				"          production_code as string,",
 				"          season as string,",
 				"          title as string,",
 				"          us_viewers_in_millions as string,",
 				"          video_url as string,",
-				"          views as string",
+				"          views as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> episodes",
 				"source(output(",
-				"          id as string,",
-				"          episode_id as string,",
-				"          number as string,",
+				"          id as integer,",
+				"          episode_id as integer,",
+				"          number as integer,",
 				"          raw_text as string,",
-				"          timestamp_in_ms as string,",
+				"          timestamp_in_ms as timestamp,",
 				"          speaking_line as string,",
-				"          character_id as string,",
-				"          location_id as string,",
+				"          character_id as integer,",
+				"          location_id as integer,",
 				"          raw_character_text as string,",
 				"          raw_location_text as string,",
 				"          spoken_words as string,",
@@ -93,7 +127,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> scripts",
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          name as string,",
 				"          normalized_name as string",
 				"     ),",
@@ -107,7 +141,68 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectcharacters",
-				"selectcharacters filter(ERROR_FUNCTION('')) ~> filter1"
+				"selectcharacters filter(genero!=\"Null\") ~> filtergeneronull",
+				"locations select(mapColumn(",
+				"          id,",
+				"          nombre = normalized_name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectlocations",
+				"episodes select(mapColumn(",
+				"          id_episodes = id,",
+				"          imdb_rating,",
+				"          imdb_votes,",
+				"          original_air_date,",
+				"          original_air_year,",
+				"          season,",
+				"          title,",
+				"          us_viewers_in_millions,",
+				"          views",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectepisodes",
+				"scripts select(mapColumn(",
+				"          id,",
+				"          episode_id,",
+				"          number,",
+				"          raw_text,",
+				"          timestamp_in_ms,",
+				"          speaking_line,",
+				"          character_id,",
+				"          location_id,",
+				"          raw_character_text,",
+				"          raw_location_text,",
+				"          normalized_text,",
+				"          word_count",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectscripts",
+				"selectepisodes, selectscripts join(id_episodes == episode_id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> episodesscripts",
+				"filtergeneronull sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> salidacharacters",
+				"selectlocations sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> salidalocations",
+				"episodesscripts sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> salidaepisodesscripts"
 			]
 		}
 	}

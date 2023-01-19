@@ -1,0 +1,27 @@
+{
+	"name": "salida_locations",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storageclasedf",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "clasedf"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "locations/locations.csv",
+				"folderPath": "Simpsons",
+				"fileSystem": "clasedf"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
