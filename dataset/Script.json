@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Simpson"
+			"name": "Dibujos"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
