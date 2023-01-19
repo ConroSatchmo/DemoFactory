@@ -1,5 +1,5 @@
 {
-	"name": "salida_locations",
+	"name": "entrada_peliculas",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "storageclasedf",
@@ -13,8 +13,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "locations/",
-				"folderPath": "Simpsons",
+				"fileName": "peliculas.csv",
+				"folderPath": "Origen",
 				"fileSystem": "clasedf"
 			},
 			"columnDelimiter": ",",
@@ -22,6 +22,27 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "peli_id",
+				"type": "String"
+			},
+			{
+				"name": "titulo",
+				"type": "String"
+			},
+			{
+				"name": "fecha_estreno",
+				"type": "String"
+			},
+			{
+				"name": "fecha_lan_vid",
+				"type": "String"
+			},
+			{
+				"name": "imdb_url",
+				"type": "String"
+			}
+		]
 	}
 }

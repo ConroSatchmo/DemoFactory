@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "episode_scripts/",
 				"folderPath": "Simpsons",
 				"fileSystem": "clasedf"
 			},
